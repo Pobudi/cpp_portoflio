@@ -17,14 +17,13 @@ using namespace std;
 using namespace Poco::Net;
 
 auto delete_m(){
-    MailHandler inbox(getenv("email_bot"),getenv("pass_bot"));
-    inbox.get_inbox();
-    inbox.print_inbox();
+    MailHandler inbox;
+    inbox.scan_inbox();
     return inbox.get_queries();
 }
 
-auto send_mail(string user, string subject, string content){
-    MailHandler mail(getenv("email_bot"), getenv("pass_bot"));
+auto send_mail(const string& user, const string& subject, const string& content){
+    MailHandler mail;
     mail.send_mail(user, subject, content);
 }
 
