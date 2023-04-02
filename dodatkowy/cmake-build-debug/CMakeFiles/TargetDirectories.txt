@@ -1,0 +1,3 @@
+/home/bartosz/Desktop/dodatkowy/cmake-build-debug/CMakeFiles/dodatkowy.dir
+/home/bartosz/Desktop/dodatkowy/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/bartosz/Desktop/dodatkowy/cmake-build-debug/CMakeFiles/rebuild_cache.dir
