@@ -23,7 +23,7 @@ void MailHandler::print_inbox() {
         else content = message.getContent();
 
         queries.insert({s_mail, {message.getSubject(), content}});
-//        pop3session.deleteMessage(currentMessage.id);
+       pop3session.deleteMessage(currentMessage.id);
     }
     messages.erase(messages.begin(), messages.end());
 }
