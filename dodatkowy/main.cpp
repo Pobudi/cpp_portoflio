@@ -28,7 +28,7 @@ auto send_mail(string user, string subject, string content){
 auto get_data(string& type, string& prompt){
     openai::start(getenv("openai_key"));
     string content;
-    if (type == "Obraz" || type == "obraz"){
+    if (type == "Image" || type == "image"){
         auto image = openai::image().create({
             {"prompt", prompt},
             {"n", 1},
