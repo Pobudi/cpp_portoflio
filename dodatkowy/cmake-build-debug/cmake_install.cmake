@@ -1,4 +1,4 @@
-# Install script for directory: /home/bartosz/CLionProjects/cpp_portoflio/dodatkowy
+# Install script for directory: /home/bartosz/Desktop/dodatkowy
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/bartosz/CLionProjects/cpp_portoflio/dodatkowy/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/bartosz/Desktop/dodatkowy/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

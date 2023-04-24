@@ -1,31 +1,42 @@
 //
 // Created by bartosz on 28.03.23.
 //
+
 #include "mail_handler.h"
 
 #include "Poco/Net/POP3ClientSession.h"
 #include "Poco/Net/MailMessage.h"
-#include "mail_handler.h"
 
-void MailHandler::scan_inbox() {
-    Poco::Net::POP3ClientSession pop3session = Poco::Net::POP3ClientSession("pop3.poczta.onet.pl");
-    pop3session.login( getenv("email_bot"), getenv("pass_bot"));
-    pop3session.listMessages( messages );
+void MailHandler::print_inbox() {
     for (auto& i:messages){
+        std::string content;
         const Poco::Net::POP3ClientSession::MessageInfo & currentMessage=i;
         Poco::Net::MailMessage message;
         pop3session.retrieveMessage(currentMessage.id, message);
-////    parsing so that only mail address will be left
+        //parsing so that only mail address will be left
         std::string s_mail;
         s_mail = message.getSender();
         auto where_del = s_mail.find('<');
         s_mail = s_mail.substr(where_del+1, s_mail.length() - where_del-2);
-        queries.insert({s_mail, message.getSubject()});
-//            session.deleteMessage(currentMessage.id);
+
+        if (message.isMultipart()) content = get_multipart(message);
+        else content = message.getContent();
+
+        queries.insert({s_mail, {message.getSubject(), content}});
+//        pop3session.deleteMessage(currentMessage.id);
     }
     messages.erase(messages.begin(), messages.end());
-    pop3session.close();
 }
+
+std::string MailHandler::get_multipart(const Poco::Net::MailMessage &message) const {
+    const Poco::Net::MailMessage::PartVec & parts = message.parts();
+    std::string content;
+    const Poco::Net::MailMessage::Part p = parts[0];
+    std::istream& m = p.pSource->stream();
+    getline(m, content);
+    return content;
+}
+
 
 int MailHandler::send_mail(const std::string &u_mail, const std::string &subject, const std::string &content) {
     //creating message

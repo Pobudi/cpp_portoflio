@@ -14,25 +14,36 @@
 
 class MailHandler{
 private:
+    Poco::Net::POP3ClientSession pop3session = Poco::Net::POP3ClientSession("pop3.poczta.onet.pl");
+
     Poco::Net::POP3ClientSession::MessageInfoVec messages;
-    std::multimap<std::string, std::string> queries;
+    std::multimap<std::string, std::vector<std::string>> queries;
 
 public:
+    // constructor loggs in to the session
+    MailHandler(const char * userName, const char * password){
+        pop3session.login( userName, password );
+    }
+    // destructor closes connection
+    ~MailHandler(){
+        pop3session.close();
+    }
+    // returns multimap that holds <sender, {subject, content}>
     auto get_queries(){
         return queries;
     }
-    ////retrieves messages and prints them
-    void scan_inbox();
-    ////sends mails
-    static int send_mail(const std::string& u_mail, const std::string& subject, const std::string& content);
-
-    static void print( const Poco::Net::MailMessage & message ){
-        time_t receivedTime = message.getDate().epochTime();
-        std::cout << "date:    " << ctime( & receivedTime ) << std::endl;
-        std::cout << "subject: " << message.getSubject() << std::endl;
-        std::cout << "sender:  " << message.getSender() << std::endl;
+    // updates messages
+    void get_inbox(){
+        pop3session.listMessages( messages );
     }
+    // retrieves messages and prints them
+    void print_inbox();
 
+    // handles multipart messages
+    std::string get_multipart(const Poco::Net::MailMessage & message)const;
+
+    // sends mail
+    int send_mail(const std::string& u_mail, const std::string& subject, const std::string& content);
 };
 
 
